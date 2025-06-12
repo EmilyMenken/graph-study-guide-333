@@ -122,7 +122,7 @@ public class Practice {
    * @return a sorted list of all reachable vertex values
    */
   public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
-    
+
      if (!graph.containsKey(starting)) return new ArrayList<>();
 
     Set<Integer> visited = new HashSet<>();
@@ -167,8 +167,50 @@ public class Practice {
    * @return true if there is a two-way connection between v1 and v2, false otherwise
    */
   public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
+    
+    if (v1 == null || v2 == null) return false;
+    if (v1 == v2) return true;
+
+    Set<Vertex<T>> visited1 = new HashSet<>();
+    Stack<Vertex<T>> stack1 = new Stack<>();
+    stack1.push(v1);
+    boolean canReachV2 = false;
+
+    while (!stack1.isEmpty()) {
+      Vertex<T> current = stack1.pop();
+      if (current == v2) {
+
+        canReachV2 = true;
+        break;
+
+      }
+      if (visited1.add(current)) {
+
+        stack1.addAll(current.neighbors);
+
+      }
+    }
+
+    if (!canReachV2) return false;
+
+    Set<Vertex<T>> visited2 = new HashSet<>();
+    Stack<Vertex<T>> stack2 = new Stack<>();
+    stack2.push(v2);
+
+    while (!stack2.isEmpty()) {
+      Vertex<T> current = stack2.pop();
+      if (current == v1) return true;
+      if (visited2.add(current)) {
+
+        stack2.addAll(current.neighbors);
+
+      }
+    }//end while
+
     return false;
+
   }
+  
 
   /**
    * Returns whether there exists a path from the starting to ending vertex that includes only positive values.
