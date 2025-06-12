@@ -167,7 +167,7 @@ public class Practice {
    * @return true if there is a two-way connection between v1 and v2, false otherwise
    */
   public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
-    
+
     if (v1 == null || v2 == null) return false;
     if (v1 == v2) return true;
 
@@ -225,7 +225,31 @@ public class Practice {
    * @return whether there exists a valid positive path from starting to ending
    */
   public static boolean positivePathExists(Map<Integer, Set<Integer>> graph, int starting, int ending) {
-    return false;
+    
+    if (!graph.containsKey(starting) || !graph.containsKey(ending)) return false;
+    if (starting <= 0 || ending <= 0) return false;
+
+    Set<Integer> visited = new HashSet<>();
+    Stack<Integer> stack = new Stack<>();
+    stack.push(starting);
+
+    while (!stack.isEmpty()) {
+      int current = stack.pop();
+      if (current == ending) return true;
+      if (visited.contains(current)) continue;
+
+      visited.add(current);
+      for (int neighbor : graph.getOrDefault(current, Collections.emptySet())) {
+        if (neighbor > 0 && !visited.contains(neighbor)) {
+
+          stack.push(neighbor);
+
+        }
+      }
+    }//end while
+
+    return false; 
+
   }
 
   /**
