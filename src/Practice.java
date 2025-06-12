@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -78,8 +80,36 @@ public class Practice {
    * @return a sorted list of all reachable vertex values by 
    */
   public static List<Integer> sortedReachable(Vertex<Integer> starting) {
-    return null;
+    
+     if (starting == null) return new ArrayList<>();
+
+    Set<Vertex<Integer>> visited = new HashSet<>();
+    Stack<Vertex<Integer>> stack = new Stack<>();
+    List<Integer> result = new ArrayList<>();
+
+    stack.push(starting);
+
+    while (!stack.isEmpty()) {
+      Vertex<Integer> current = stack.pop();
+      if (visited.contains(current)) continue;
+
+      visited.add(current);
+      result.add(current.data);
+
+      for (Vertex<Integer> neighbor : current.neighbors) {
+        if (!visited.contains(neighbor)) {
+
+          stack.push(neighbor);
+
+        }
+      }
+    }//end while
+
+    Collections.sort(result);
+    return result;
+
   }
+
 
   /**
    * Returns a sorted list of all values reachable from the given starting vertex in the provided graph.
