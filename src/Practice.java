@@ -225,7 +225,7 @@ public class Practice {
    * @return whether there exists a valid positive path from starting to ending
    */
   public static boolean positivePathExists(Map<Integer, Set<Integer>> graph, int starting, int ending) {
-    
+
     if (!graph.containsKey(starting) || !graph.containsKey(ending)) return false;
     if (starting <= 0 || ending <= 0) return false;
 
@@ -262,7 +262,36 @@ public class Practice {
    * @return true if a person in the extended network works at the specified company, false otherwise
    */
   public static boolean hasExtendedConnectionAtCompany(Professional person, String companyName) {
+    
+    if (person == null) return false;
+
+    Set<Professional> visited = new HashSet<>();
+    Stack<Professional> stack = new Stack<>();
+    stack.push(person);
+
+    while (!stack.isEmpty()) {
+      Professional current = stack.pop();
+      if (visited.contains(current)) continue;
+
+      visited.add(current);
+
+      if (companyName.equals(current.getCompany())) {
+        
+        return true;
+
+      }
+
+      for (Professional connection : current.getConnections()) {
+        if (!visited.contains(connection)) {
+
+          stack.push(connection);
+
+        }
+      }
+    }//end while
+
     return false;
+
   }
 
   /**
