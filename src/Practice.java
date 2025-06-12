@@ -80,7 +80,7 @@ public class Practice {
    * @return a sorted list of all reachable vertex values by 
    */
   public static List<Integer> sortedReachable(Vertex<Integer> starting) {
-    
+
      if (starting == null) return new ArrayList<>();
 
     Set<Vertex<Integer>> visited = new HashSet<>();
@@ -122,8 +122,35 @@ public class Practice {
    * @return a sorted list of all reachable vertex values
    */
   public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
-    return null;
+    
+     if (!graph.containsKey(starting)) return new ArrayList<>();
+
+    Set<Integer> visited = new HashSet<>();
+    Stack<Integer> stack = new Stack<>();
+    List<Integer> result = new ArrayList<>();
+
+    stack.push(starting);
+
+    while (!stack.isEmpty()) {
+      int current = stack.pop();
+      if (visited.contains(current)) continue;
+
+      visited.add(current);
+      result.add(current);
+
+      Set<Integer> neighbors = graph.getOrDefault(current, Collections.emptySet());
+      for (int neighbor : neighbors) {
+        if (!visited.contains(neighbor)) {
+          stack.push(neighbor);
+        }
+      }
+    }//end while
+
+    Collections.sort(result);
+    return result;
+
   }
+  
 
   /**
    * Returns true if and only if it is possible both to reach v2 from v1 and to reach v1 from v2.
